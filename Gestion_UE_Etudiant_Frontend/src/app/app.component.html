@@ -1,0 +1,49 @@
+<main class="page">
+  <h1>{{ title }}</h1>
+  <p class="status">{{ status }}</p>
+
+  <section class="panel">
+    <h2>Unite Enseignement</h2>
+    <div class="grid">
+      <label>Lookup Code <input type="number" [(ngModel)]="lookupCode" /></label>
+      <label>Code <input type="number" [(ngModel)]="uePayload.code" /></label>
+      <label>Domaine <input [(ngModel)]="uePayload.domaine" /></label>
+      <label>Responsable <input [(ngModel)]="uePayload.responsable" /></label>
+      <label>Credits <input type="number" [(ngModel)]="uePayload.credits" /></label>
+      <label>Semestre <input type="number" [(ngModel)]="uePayload.semestre" /></label>
+    </div>
+    <div class="actions">
+      <button (click)="loadUnites()">Refresh UE</button>
+      <button (click)="createUE()">Create UE</button>
+      <button (click)="updateUE()">Update UE (lookup code)</button>
+      <button (click)="deleteUE()">Delete UE (lookup code)</button>
+    </div>
+    <pre>{{ unites | json }}</pre>
+  </section>
+
+  <section class="panel">
+    <h2>Modules</h2>
+    <div class="grid">
+      <label>Lookup Matricule <input [(ngModel)]="lookupModuleMatricule" /></label>
+      <label>Matricule <input [(ngModel)]="modulePayload.matricule" /></label>
+      <label>Nom <input [(ngModel)]="modulePayload.nom" /></label>
+      <label>Coefficient <input type="number" [(ngModel)]="modulePayload.coefficient" /></label>
+      <label>Volume Horaire <input type="number" [(ngModel)]="modulePayload.volumeHoraire" /></label>
+      <label>Type
+        <select [(ngModel)]="modulePayload.type">
+          <option value="TRANSVERSAL">TRANSVERSAL</option>
+          <option value="PROFESSIONNEL">PROFESSIONNEL</option>
+          <option value="RECHERCHE">RECHERCHE</option>
+        </select>
+      </label>
+      <label>UE Code <input type="number" [(ngModel)]="modulePayload.uniteEnseignement.code" /></label>
+    </div>
+    <div class="actions">
+      <button (click)="loadModules()">Refresh Modules</button>
+      <button (click)="createModule()">Create Module</button>
+      <button (click)="updateModule()">Update Module (lookup matricule)</button>
+      <button (click)="deleteModule()">Delete Module (lookup matricule)</button>
+    </div>
+    <pre>{{ modules | json }}</pre>
+  </section>
+</main>

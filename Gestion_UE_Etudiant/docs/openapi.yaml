@@ -1,0 +1,247 @@
+openapi: 3.0.3
+info:
+  title: Gestion UE Etudiant API
+  version: 1.0.0
+  description: API REST for UniteEnseignement and Module resources.
+servers:
+  - url: http://localhost:8080/app/api
+paths:
+  /unite:
+    get:
+      summary: List all UE
+      responses:
+        "200":
+          description: UE list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UniteEnseignement"
+    post:
+      summary: Create UE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UniteEnseignement"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UniteEnseignement"
+  /unite/UE:
+    get:
+      summary: Get UE by code
+      parameters:
+        - in: query
+          name: code
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: UE found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UniteEnseignement"
+        "404":
+          description: Not found
+  /unite/semestre/{semestre}:
+    get:
+      summary: Get UE by semestre
+      parameters:
+        - in: path
+          name: semestre
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: UE list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UniteEnseignement"
+  /unite/{code}:
+    delete:
+      summary: Delete UE by code
+      parameters:
+        - in: path
+          name: code
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+  /unite/UE/{code}:
+    put:
+      summary: Update UE by code
+      parameters:
+        - in: path
+          name: code
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UniteEnseignement"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UniteEnseignement"
+        "404":
+          description: Not found
+  /modules:
+    get:
+      summary: List modules
+      responses:
+        "200":
+          description: Module list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Module"
+    post:
+      summary: Create module
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Module"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Module"
+        "404":
+          description: UE not found
+  /modules/{matricule}:
+    get:
+      summary: Get module by matricule
+      parameters:
+        - in: path
+          name: matricule
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Module found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Module"
+        "404":
+          description: Not found
+    put:
+      summary: Update module by matricule
+      parameters:
+        - in: path
+          name: matricule
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Module"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Module"
+        "404":
+          description: Not found
+    delete:
+      summary: Delete module by matricule
+      parameters:
+        - in: path
+          name: matricule
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+        "404":
+          description: Not found
+  /modules/UE:
+    get:
+      summary: Get modules by UE code
+      parameters:
+        - in: query
+          name: codeUE
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Module list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Module"
+        "404":
+          description: UE not found
+components:
+  schemas:
+    UniteEnseignement:
+      type: object
+      properties:
+        code:
+          type: integer
+        domaine:
+          type: string
+        responsable:
+          type: string
+        credits:
+          type: integer
+        semestre:
+          type: integer
+      required: [code, domaine, responsable, credits, semestre]
+    Module:
+      type: object
+      properties:
+        matricule:
+          type: string
+        nom:
+          type: string
+        coefficient:
+          type: integer
+        volumeHoraire:
+          type: integer
+        type:
+          type: string
+          enum: [TRANSVERSAL, PROFESSIONNEL, RECHERCHE]
+        uniteEnseignement:
+          $ref: "#/components/schemas/UniteEnseignement"
+      required: [matricule, nom, coefficient, volumeHoraire, type, uniteEnseignement]
